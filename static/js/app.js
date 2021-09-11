@@ -159,6 +159,6 @@ function optionChanged(testSubjectID){
  optionChanged(91901);
  
  // Event on change takes the value and calls the function during dropdown selection
- d3.select("#selDataset").on('change',() => {
+ d3.select("#selZipcode").on('change',() => {
  optionChanged(d3.event.target.value);
  });   
