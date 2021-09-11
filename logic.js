@@ -5,29 +5,34 @@ var myMap = L.map("map", {
   zoom: 13
 });
 
-var datafile = "JSON/sdcrime_geography.json"
-
 // Adding a tile layer (the background map image) to our map:
 // We use the addTo() method to add objects to our map.
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
 
-d3.json(datafile).then(function(data) {
-  for (var i = 0; i <= data.data.length; i++) {
+// Get the json
+var datafile = "JSON/sd_master_df_table.json"
+
+var zipcodes = d3.json(datafile).then(function(zipcode) {
+  return zipcode.data
+})
+
+zipcodes.then(function(data){
+
+  for (var i=0; i < Object.keys(data).length; i++) {
     
-    var marker = L.marker([data.data[i].latitude, data.data[i].longitude], {
-    draggable: false,
-    }).addTo(myMap);   
+    if (data[i].latitude != null) {
+      
+      console.log(data[i])
+
+      var popupstr = '<h5>Zip code: '+ data[i].zipcode + '</h5><li>Theft Count: ' + data[i]['Theft Count'] +
+                      '</li><li>Miscellaneous Count: ' + data[i]['Miscellaneous Count'] + '</li>'
+
+      L.marker([data[i].latitude, data[i].longitude])
+      .bindPopup(popupstr)
+      .addTo(myMap)
+    }
+
   }
-});
-
-// Creating a new marker:
-// We pass in some initial options, and then add the marker to the map by using the addTo() method.
-//var marker = L.marker([32.98483, -116.73747], {
-//  draggable: true,
-//  title: "My First Marker"
-//}).addTo(myMap);
-
-// Binding a popup to our marker
-//marker.bindPopup("Hello There!");
+})
