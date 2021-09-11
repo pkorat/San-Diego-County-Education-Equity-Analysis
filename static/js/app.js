@@ -130,18 +130,18 @@ function optionChanged(testSubjectID){
     title1 = ("<b>Median Household Income by Race</b>")
     
     // Define the layout and trace object, edit color and orientation
-      var data = [{
-        values: racevalues,
-        labels: racetype,
-        type: 'pie'
-      }];  
+    var data = [{
+      values: racevalues,
+      labels: racetype,
+      type: 'pie'
+    }];  
 
-      var layout = {
-        height: 400,
-        width: 500
-      };
+    var layout = {
+      height: 400,
+      width: 500
+    };
       
-      Plotly.newPlot('myDiv', data, layout);
+     Plotly.newPlot('pie', data, layout);
  
 });
 }
