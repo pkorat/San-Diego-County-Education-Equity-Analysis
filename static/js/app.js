@@ -205,11 +205,11 @@ function optionChanged(testSubjectID){
  
     // Create dictionary to store data from JSON
     var eduvalue = [];
-    var edudata = ['10th','High School','GED','Associate','Bachelors','Masters','Professional','Doctoral'];
+    var edudata = ['10th','11th','High School','GED','Associate','Bachelors','Masters','Professional','Doctoral'];
 
     Object.entries(idSample[0]).forEach(item=> 
       {
-        if (((item[0]) === 'o25_10th_grade_attained_ratio')||((item[0]) === 'o25_high_school_completed_ratio') ||((item[0]) === 'o25_ged_attained_ratio')||((item[0]) === 'o25_assoc_degree_completed_ratio')||((item[0]) === 'o25_bach_degree_completed_ratio')||((item[0]) === 'o25_masters_degree_completed_ratio') ||((item[0]) === 'o25_professional_degree_completed_ratio')||((item[0]) === 'o25_doctoral_degree_completed_ratio')){
+        if (((item[0]) === 'o25_10th_grade_attained_ratio')||((item[0]) === 'o25_11th_grade_completed_ratio') ||((item[0]) === 'o25_high_school_completed_ratio') ||((item[0]) === 'o25_ged_attained_ratio')||((item[0]) === 'o25_assoc_degree_completed_ratio')||((item[0]) === 'o25_bach_degree_completed_ratio')||((item[0]) === 'o25_masters_degree_completed_ratio') ||((item[0]) === 'o25_professional_degree_completed_ratio')||((item[0]) === 'o25_doctoral_degree_completed_ratio')){
           edudata.push(item[0])
           eduvalue.push(item[1] * 100)
         }
