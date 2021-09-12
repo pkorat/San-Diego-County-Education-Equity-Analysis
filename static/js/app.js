@@ -26,12 +26,16 @@ function optionChanged(testSubjectID){
     //------------ For Zipcode Demographic Info Section ------------------------------------------
     const panelDisplay = d3.select("#sample-metadata");
     panelDisplay.html("");
-
+    paneltext = ['Zipcode','Total Students Enrolled','Avg. School Rating','Median Houshold Income','Total Population','Latitude','Longitude']
+    var i =0
+    
     //Selecting the required parameters from the Json to display in the Zipcode Demographic section 
     Object.entries(idMetadata[0]).forEach(item=> 
        {
-          if (((item[0]) === 'zipcode')||((item[0]) === 'Total Students Enrolled') ||((item[0]) === 'Average_School_Rating')||((item[0]) === 'MEDIAN HOUSEHOLD INCOME')||((item[0]) === 'latitude')||((item[0]) === 'longitude')||((item[0]) === 'POPULATION_TOTAL')){
-            panelDisplay.append("p").text(`${item[0]}: ${item[1]}`)
+          if (((item[0]) === 'zipcode')||((item[0]) === 'Total Students Enrolled') ||((item[0]) === 'Average_School_Rating')||((item[0]) === 'MEDIAN HOUSEHOLD INCOME')||((item[0]) === 'latitude_x')||((item[0]) === 'longitude_x')||((item[0]) === 'POPULATION_TOTAL')){
+            //panelDisplay.append("p").text(`${item[0]}: ${item[1]}`)
+            panelDisplay.append("p").text(`${paneltext[i]}: ${item[1]}`)
+            i++
           }
        });
       
@@ -188,7 +192,7 @@ function optionChanged(testSubjectID){
      layout2 = {
          title: '<b>House hold Configuration</b>',
          xaxis: {title: 'Household Type'},
-         yaxis: {title: 'Percentage'},
+         yaxis: {title: 'Percentage (%)'},
          showlegend: true,
          height: 400,
          width: 500
@@ -230,7 +234,7 @@ function optionChanged(testSubjectID){
     layout3 = {
         title: '<b>Educational Statistics</b>',
         xaxis: {title: 'Educational Statistics'},
-        yaxis: {title: 'Counts (in %)'},
+        yaxis: {title: 'Percentage (%)'},
         showlegend: true,
         height: 400,
         width: 500
@@ -238,6 +242,15 @@ function optionChanged(testSubjectID){
     
     // Plot using Plotly
     Plotly.newPlot('bar3', [trace3], layout3);
+
+//    var myMap1 = L.map("map1", {
+//      center: [33.0414, -116.8793],
+//      zoom: 9
+//    });
+//
+//    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//    }).addTo(myMap1);
 
 });
 }
