@@ -1,3 +1,7 @@
+
+
+
+
 // Creating our initial map object:
 // We set the longitude, latitude, and starting zoom level.
 var myMap = L.map("map", {
@@ -111,3 +115,20 @@ info.update = function (props) {
 };
 
 info.addTo(myMap);
+
+var heatmapLayer = L.TileLayer.heatMap({
+  // radius could be absolute or relative
+  // absolute: radius in meters, relative: radius in pixels
+  //radius: { value: 15000, absolute: true },
+  radius: { value: 20, absolute: false },
+  opacity: 0.8,
+  gradient: {
+      0.15: "rgb(0,0,255)",
+      0.35: "rgb(0,255,255)",
+      0.65: "rgb(0,255,0)",
+      0.95: "yellow",
+      1.0: "rgb(255,0,0)"
+  }
+});
+
+heatmapLayer.setData(testData.data);
