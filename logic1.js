@@ -21,24 +21,33 @@ var zipcodes = d3.json(url_master).then(function(zipcode) {
   return zipcode.data
 })
 
-function getColor(size) {
-  if (size > 50000) {
-    return "#eb4f34";
+function getColor(rating) {
+  if (rating > 9) {
+    return "#1CF036";
   }
-  else if (size > 40000) {
-    return "#eb9334";
+  else if (rating > 8) {
+    return "#6DF215";
   } 
-  else if (size > 30000) {
-    return "#ebc034";
+  else if (rating > 7) {
+    return "#9AF10D";
   } 
-  else if (size > 20000) {
-    return "#dceb34";
+  else if (rating > 6) {
+    return "#E6F10D";
   } 
-  else if (size > 10000) {
-    return "#37eb34";
+  else if (rating > 5) {
+    return "#F1C10D";
+  } 
+  else if (rating > 4) {
+    return "#F19A0D";
+  } 
+  else if (rating > 3) {
+    return "#F1720D";
+  } 
+  else if (rating > 2) {
+    return "#F14E0D";
   } 
   else {
-    return "#34ebbd"; 
+    return "#F11F0D"; 
   }
 }
 
@@ -55,9 +64,9 @@ zipcodes.then(function(data) {
 
       //L.circleMarker([data[i].latitude_y, data[i].longitude_y])                
       L.circleMarker(([data[i].latitude_y, data[i].longitude_y]),{
-        color: getColor(data[i]['POPULATION_TOTAL']),
-        radius: (data[i]['Average_School_Rating']),
-        fillColor: getColor(data[i]['POPULATION_TOTAL']),
+        color: getColor(data[i]['Average_School_Rating']),
+        radius: (data[i]['POPULATION_TOTAL']/5000),
+        fillColor: getColor(data[i]['Average_School_Rating']),
         fillOpacity: 1
         })     
       .bindPopup(popupstr)
