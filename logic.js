@@ -12,36 +12,35 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(myMap);
 
 // Get the json
-var datafile = "JSON/sd_master_df_table.json"
+var url_master = 'https://raw.githubusercontent.com/pkorat/bulldogs-project-3/main/JSON/sd_master_df_table.json'
 
 var url_zip = 'https://raw.githubusercontent.com/pkorat/bulldogs-project-3/722834ff1e5149ff183a18958e09e6929bc87459/JSON/sd_zipcode.geojson'
 
-var zipcodes = d3.json(datafile).then(function(zipcode) {
+// Get the data from the json
+var zipcodes = d3.json(url_master).then(function(zipcode) {
   return zipcode.data
 })
 
-zipcodes.then(function(data){
+// Add markers from the master data. Includes crime stats
+zipcodes.then(function(data) {
 
   for (var i=0; i < Object.keys(data).length; i++) {
 
-    if (data[i].latitude_x != null) {
-      
-      console.log(data[i])
+    if (data[i].latitude_y != null) {
 
-      // var popupstr = '<h5>Zip code: '+ data[i].zipcode + '</h5><li>Theft Count: ' + data[i]['Theft Count_y'] +
-      //                 '</li><li>Miscellaneous Count: ' + data[i]['Miscellaneous Count_y'] + '</li>'
+      var popupstr = '<h5>Zip code: '+ data[i].zipcode + '</h5><li>Theft Count: ' + data[i]['Theft Count_y'] +
+                      '</li><li>Miscellaneous Count: ' + data[i]['Miscellaneous Count_y'] + '</li>'
 
-      // L.marker([data[i].latitude_y, data[i].longitude_y])
-      // .bindPopup(popupstr)
-      // .addTo(myMap)
+      L.marker([data[i].latitude_y, data[i].longitude_y])
+      .bindPopup(popupstr)
+      .addTo(myMap)
     }
-
   }
 })
 
-
 // Apply the geoJSON to the map layer and onEachFeature
 var zipcode_geo = d3.json(url_zip).then(function(bounds) {
+  console.log(bounds)
   geojsonlayer = L.geoJSON(bounds, {
     onEachFeature: onEachFeature
   }).addTo(myMap)
@@ -63,6 +62,7 @@ function style(feature) {
 function highlightFeature(e) {
   resetHighlight(e);
   var layer = e.target;
+  console.log(layer.feature.properties)
 
   layer.setStyle({
     weight: 3,
@@ -72,11 +72,14 @@ function highlightFeature(e) {
     lineCap: 'round',
     lineJoin: 'round'
   });
+
+  info.update(layer.feature.properties)
 }
 
 // Reset the highlighted feature after mouseout
 function resetHighlight(e) {
   geojsonlayer.setStyle(style);
+  info.update()
 }
 
 // Zoom on the zipcode boundary
@@ -92,3 +95,19 @@ function onEachFeature(feature, layer) {
     click: zoomToFeature
   });
 }
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Community / Zipcode</h4>' +  (props ?
+        '<b>' + props.community + '</b> <br>' + props.zip + '':'')
+};
+
+info.addTo(myMap);
