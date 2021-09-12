@@ -89,6 +89,7 @@ function optionChanged(testSubjectID){
     // Remove Sample value and otuID from individual
     var crimetext = [];
     var crimevalue = [];
+    var crimedata = ['Theft','Substance Abuse','Violent','Miscellaneous'];
 
     Object.entries(idSample[0]).forEach(item=> 
       {
@@ -101,10 +102,10 @@ function optionChanged(testSubjectID){
  
     // Define the layout and trace object, edit color and orientation
     const trace1 = {
-        x: crimetext,
+        x: crimedata,
         y: crimevalue,
         mode: 'markers',
-        text:  crimetext,
+        text:  crimedata,
         type: 'bar',
         marker: {
           color: '#1966FF',
@@ -120,7 +121,7 @@ function optionChanged(testSubjectID){
         yaxis: {title: 'Counts'},
         showlegend: false,
         height: 600,
-        width: 800
+        width: 600
     };
     
     // Plot using Plotly
@@ -190,7 +191,7 @@ function optionChanged(testSubjectID){
          yaxis: {title: 'Percentage'},
          showlegend: false,
          height: 600,
-         width: 800
+         width: 600
      };
      
      // Plot using Plotly
