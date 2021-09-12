@@ -26,8 +26,8 @@ zipcodes.then(function(data){
       
       console.log(data[i])
 
-      var popupstr = '<h5>Zip code: '+ data[i].zipcode + '</h5><li>Theft Count: ' + data[i]['Theft Count'] +
-                      '</li><li>Miscellaneous Count: ' + data[i]['Miscellaneous Count'] + '</li>'
+      var popupstr = '<h5>Zip code: '+ data[i].zipcode + '</h5><li>Theft Count: ' + data[i]['Theft Count_y'] +
+                      '</li><li>Miscellaneous Count: ' + data[i]['Miscellaneous Count_y'] + '</li>'
 
       L.marker([data[i].latitude_y, data[i].longitude_y])
       .bindPopup(popupstr)
