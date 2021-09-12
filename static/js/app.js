@@ -87,35 +87,50 @@ function optionChanged(testSubjectID){
     //------------ Code for Bubble Chart ------------------------------------------------------
  
     // Remove Sample value and otuID from individual
-    var testSubjectValue1 =idSample[0].sample_values;
-    var otuID1= idSample[0].otu_ids;
+    var crimetext = [];
+    var crimevalue = [];
+
+    Object.entries(idSample[0]).forEach(item=> 
+      {
+        if (((item[0]) === 'Violent Count_x')||((item[0]) === 'Substance Abuse Count_x') ||((item[0]) === 'Theft Count_x')||((item[0]) === 'Miscellaneous Count_x')){
+        // console.log(item);
+          crimetext.push(item[0])  
+          crimevalue.push(item[1])
+        }
+      });
  
     // Define the layout and trace object, edit color and orientation
     const trace1 = {
-        x: otuID1,
-        y: testSubjectValue1,
+        x: crimetext,
+        y: crimevalue,
         mode: 'markers',
+        text:  crimetext,
+        type: 'bar',
         marker: {
-            color: otuID1,
-            size: testSubjectValue1
-        }
+          color: '#1966FF',
+          line: {
+             width: 3
+          }
+        }  
     },
  
     layout1 = {
-        title: '<b>Bubble Chart For Each Sample</b>',
-        xaxis: {title: 'OTU ID'},
-        yaxis: {title: 'Number of Samples Collected'},
+        title: '<b>Crime Reported by Type</b>',
+        xaxis: {title: 'Crime Type'},
+        yaxis: {title: 'Counts'},
         showlegend: false,
-        height: 800,
-        width: 1200
+        height: 600,
+        width: 800
     };
     
     // Plot using Plotly
-    Plotly.newPlot('bubble', [trace1], layout1);
+    Plotly.newPlot('bar1', [trace1], layout1);
 
   // Pie chart for Population - Race ratio  
     var racetype = [] 
     var racevalues = [] 
+
+    title2 = ("<b>Population by Race</b>")
 
     Object.entries(idSample[0]).forEach(item=> 
       {
@@ -126,9 +141,6 @@ function optionChanged(testSubjectID){
         }
       });
 
-    
-    title1 = ("<b>Median Household Income by Race</b>")
-    
     // Define the layout and trace object, edit color and orientation
     var data = [{
       values: racevalues,
@@ -137,12 +149,53 @@ function optionChanged(testSubjectID){
     }];  
 
     var layout = {
-      height: 400,
-      width: 500
+      height: 600,
+      width: 600,
+      title: title2
     };
       
      Plotly.newPlot('pie', data, layout);
+
+     // 
+     var householdtext = [];
+     var householdvalue = [];
  
+     Object.entries(idSample[0]).forEach(item=> 
+       {
+         if (((item[0]) === 'married_ratio')||((item[0]) === 'female_hoh_ratio') ||((item[0]) === 'male_hoh_ratio')||((item[0]) === 'non_family_ratio')){
+         // console.log(item);
+          householdtext.push(item[0])  
+          householdvalue.push(item[1] * 100)
+         }
+       });
+  
+     // Define the layout and trace object, edit color and orientation
+     const trace2 = {
+         x: householdtext,
+         y: householdvalue,
+         mode: 'markers',
+         text:  crimetext,
+         type: 'bar',
+         marker: {
+           color: '#1966FF',
+           line: {
+              width: 3
+           }
+         }  
+     },
+  
+     layout2 = {
+         title: '<b>House hold configuration</b>',
+         xaxis: {title: 'Household Type'},
+         yaxis: {title: 'Percentage'},
+         showlegend: false,
+         height: 600,
+         width: 800
+     };
+     
+     // Plot using Plotly
+     Plotly.newPlot('bar2', [trace2], layout2);     
+
 });
 }
     
