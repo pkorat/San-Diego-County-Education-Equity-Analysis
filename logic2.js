@@ -1,3 +1,7 @@
+
+let school = new L.LayerGroup();
+let sdcounty = new L.LayerGroup();
+
 // Creating our initial map object:
 // We set the longitude, latitude, and starting zoom level.
 var myMap = L.map("map", {
@@ -7,10 +11,32 @@ var myMap = L.map("map", {
 
 // Adding a tile layer (the background map image) to our map:
 // We use the addTo() method to add objects to our map.
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
 
+var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+}).addTo(myMap);
+
+// Create a baseMaps object.
+var baseMaps = {
+  "Street Map": street,
+  "Topographic Map": topo
+};
+
+// Create an overlay object to hold our overlay.
+var overlayMaps = {
+  "SD Country": sdcounty,
+  "School Ranking": school
+};
+
+// Create a layer control.
+// Pass it our baseMaps and overlayMaps.
+// Add the layer control to the map.
+L.control.layers(baseMaps, overlayMaps, {
+  collapsed: true
+}).addTo(myMap);
 
 // Get the json
 var url_master = 'https://raw.githubusercontent.com/pkorat/bulldogs-project-3/main/JSON/sd_master_df_table.json'
@@ -55,14 +81,46 @@ function getColor(rating) {
 // Add markers from the master data. Includes crime stats
 zipcodes.then(function(data) {
 
+  var domethinicity = []
+  var domethinicitypct = []
+
   for (var i=0; i < Object.keys(data).length; i++) {
 
     if (data[i].latitude_y != null) {
+
+      domethinicitypct[i] = Math.max (data[i]['population_white_ratio'], data[i]['population_black_aa_ratio'], data[i]['population_indigenous_ratio'], data[i]['population_asian_ratio'], data[i]['population_haw_pac_islander_ratio'], data[i]['population_other_ratio'], data[i]['population_mixed_ratio'], data[i]['population_hispanic_latino_ratio'])
+      
+      if (domethinicitypct[i] === data[i]['population_white_ratio']) {
+        domethinicity[i] = 'White';
+      }
+      else if (domethinicitypct[i] === data[i]['population_black_aa_ratio']) {
+        domethinicity[i] = 'African American';
+      }
+      else if (domethinicitypct[i] === data[i]['ppopulation_indigenous_ratio']) {
+        domethinicity[i] = 'Indigenous';
+      }
+      else if (domethinicitypct[i] === data[i]['population_asian_ratio']) {
+        domethinicity[i] = 'Asian';
+      }
+      else if (domethinicitypct[i] === data[i]['population_haw_pac_islander_ratio']) {
+        domethinicity[i] = 'Hawaian/Pacific Islander';
+      }
+      else if (domethinicitypct[i] === data[i]['population_mixed_ratio']) {
+        domethinicity[i] = 'Mixed Ethinicity';
+      }
+      else if (domethinicitypct[i] === data[i]['population_hispanic_latino_ratio']) {
+        domethinicity[i] = 'Hispanic/Latino';
+      }
+      else {
+        domethinicity[i] = 'Others';
+      }
+
 
       var popupstr = '<h5>Zip code: '+ data[i].zipcode + '<hr>' +
                       '</h5><li>Average School Rating: ' + data[i]['Average_School_Rating'] + 
                       '</li><li>Median Income: ' + data[i]['MEDIAN HOUSEHOLD INCOME'] + 
                       '</li><li>Population: ' + data[i]['POPULATION_TOTAL'] + 
+                      '</li><li>Major Ethinicity: ' + domethinicity[i] + "(" + Math.round(domethinicitypct[i] * 100) + "%)" +
                       '</li><li>Violent Crimes Commited: ' + data[i]['Violent Count_x'] + '</li>'
 
       //L.marker([data[i].latitude_y, data[i].longitude_y])                
@@ -74,18 +132,11 @@ zipcodes.then(function(data) {
         fillOpacity: 1
         })     
       .bindPopup(popupstr)
-      .addTo(myMap)
+      .addTo(school)
     }
   }
 })
-
-// Apply the geoJSON to the map layer and onEachFeature
-var zipcode_geo = d3.json(url_zip).then(function(bounds) {
-  console.log(bounds)
-  geojsonlayer = L.geoJSON(bounds, {
-    onEachFeature: onEachFeature
-  }).addTo(myMap)
-})
+school.addTo(myMap)
 
 // Style of the layer
 function style(feature) {
@@ -103,13 +154,13 @@ function style(feature) {
 function highlightFeature(e) {
   resetHighlight(e);
   var layer = e.target;
-  console.log(layer.feature.properties)
+//  console.log(layer.feature.properties)
 
   layer.setStyle({
     weight: 3,
     opacity: 1,
     color: '#3388ff',
-    fillOpacity: 0.5,
+    fillOpacity: 0.9,
     lineCap: 'round',
     lineJoin: 'round'
   });
@@ -152,3 +203,12 @@ info.update = function (props) {
 };
 
 info.addTo(myMap);
+
+// Apply the geoJSON to the map layer and onEachFeature
+var zipcode_geo = d3.json(url_zip).then(function(bounds) {
+  console.log(bounds)
+  geojsonlayer = L.geoJSON(bounds, {
+    onEachFeature: onEachFeature
+  }).addTo(sdcounty)
+})
+sdcounty.addTo(myMap)
