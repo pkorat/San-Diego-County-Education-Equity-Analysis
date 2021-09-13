@@ -178,7 +178,7 @@ function onEachFeature(feature, layer) {
 }
 
 // Set the position of the info table to the top left
-var info = L.control({position: 'topleft'})
+var info = L.control({position: 'bottomleft'})
 
 // Create add the info table function
 info.onAdd = function (map) {
