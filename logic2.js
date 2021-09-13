@@ -178,11 +178,11 @@ function onEachFeature(feature, layer) {
 }
 
 // Set the position of the info table to the top left
-var info = L.control({position: 'topleft'});
+var info = L.control({position: 'topleft'})
 
 // Create add the info table function
 info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info');
+    this._div = L.DomUtil.create('div', 'info')
     this.update();
     return this._div;
 };
@@ -205,3 +205,27 @@ var zipcode_geo = d3.json(url_zip).then(function(bounds) {
   }).addTo(sdcounty)
 })
 sdcounty.addTo(myMap)
+
+// Set the position of the legend to the bottom right
+var legend = L.control({position: 'bottomright'})
+
+// Set the method to call when using on add on the legend
+legend.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'legend'),
+            rating = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            labels = []
+  
+  div.innerHTML = '<b> School Rating </b> <br><br>'
+  
+  for (var i = 0; i < rating.length; i++) {
+
+    div.innerHTML += '<i style=background:' + getColor(rating[i] + 1) + '></i>' + 
+                      rating[i] + (rating[i + 1] ? '&ndash;' + rating[i + 1] + '<br>' : '+')
+  }
+
+  return div
+}
+
+// Add the legend to the map
+legend.addTo(myMap)
