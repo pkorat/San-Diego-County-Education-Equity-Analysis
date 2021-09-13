@@ -48,17 +48,6 @@ var zipcodes = d3.json(url_master).then(function(zipcode) {
   return zipcode.data
 })
 
-function getColor(d) {
-  return d > 1000 ? '#800026' :
-         d > 500  ? '#BD0026' :
-         d > 200  ? '#E31A1C' :
-         d > 100  ? '#FC4E2A' :
-         d > 50   ? '#FD8D3C' :
-         d > 20   ? '#FEB24C' :
-         d > 10   ? '#FED976' :
-                    '#FFEDA0';
-}
-
 // Specify the colors for the markers by rating of the schools
 function getColor(rating) {
   return rating > 9 ? '#1CF036' :
@@ -188,7 +177,8 @@ function onEachFeature(feature, layer) {
   });
 }
 
-var info = L.control();
+// Set the position of the info table to the top left
+var info = L.control({position: 'topleft'});
 
 // Create add the info table function
 info.onAdd = function (map) {
