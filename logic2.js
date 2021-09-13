@@ -190,8 +190,8 @@ info.onAdd = function (map) {
 // Using the properties of the feature to update the info table
 info.update = function (zipinfo) {
     // Check to see if the property is there to update the info table
-    this._div.innerHTML = '<h4>Community / Zipcode</h4>' +  (zipinfo ?
-        '<b>' + zipinfo.community + '</b> <br>' + zipinfo.zip + '':'')
+    this._div.innerHTML = '<h4><b>Community / Zipcode</b></h4>' +  (zipinfo ?
+        '<b>' + zipinfo.community + '</b> / ' + zipinfo.zip + '':'')
 };
 
 // Call function to add the info table
