@@ -48,6 +48,7 @@ var zipcodes = d3.json(url_master).then(function(zipcode) {
   return zipcode.data
 })
 
+// Specify the colors for the markers by rating of the schools
 function getColor(rating) {
   if (rating > 9) {
     return "#1CF036";
@@ -77,6 +78,12 @@ function getColor(rating) {
     return "#F11F0D"; 
   }
 }
+
+// Create a Intl.NumberFormat object to format popup currency
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
 
 // Add markers from the master data. Includes crime stats
 zipcodes.then(function(data) {
@@ -117,10 +124,10 @@ zipcodes.then(function(data) {
 
 
       var popupstr = '<h5>Zip code: '+ data[i].zipcode + '<hr>' +
-                      '</h5><li>Average School Rating: ' + data[i]['Average_School_Rating'] + 
-                      '</li><li>Median Income: ' + data[i]['MEDIAN HOUSEHOLD INCOME'] + 
-                      '</li><li>Population: ' + data[i]['POPULATION_TOTAL'] + 
-                      '</li><li>Major Ethinicity: ' + domethinicity[i] + "(" + Math.round(domethinicitypct[i] * 100) + "%)" +
+                      '</h5><li>Average School Rating: ' + data[i]['Average_School_Rating'].toFixed(2) + 
+                      '</li><li>Median Income: ' + formatter.format(data[i]['MEDIAN HOUSEHOLD INCOME']) + 
+                      '</li><li>Population: ' + new Intl.NumberFormat().format(data[i]['POPULATION_TOTAL']) + 
+                      '</li><li>Major Ethinicity: ' + domethinicity[i] + " (" + Math.round(domethinicitypct[i] * 100) + "%)" +
                       '</li><li>Violent Crimes Commited: ' + data[i]['Violent Count_x'] + '</li>'
 
       //L.marker([data[i].latitude_y, data[i].longitude_y])                
