@@ -48,35 +48,28 @@ var zipcodes = d3.json(url_master).then(function(zipcode) {
   return zipcode.data
 })
 
+function getColor(d) {
+  return d > 1000 ? '#800026' :
+         d > 500  ? '#BD0026' :
+         d > 200  ? '#E31A1C' :
+         d > 100  ? '#FC4E2A' :
+         d > 50   ? '#FD8D3C' :
+         d > 20   ? '#FEB24C' :
+         d > 10   ? '#FED976' :
+                    '#FFEDA0';
+}
+
 // Specify the colors for the markers by rating of the schools
 function getColor(rating) {
-  if (rating > 9) {
-    return "#1CF036";
-  }
-  else if (rating > 8) {
-    return "#6DF215";
-  } 
-  else if (rating > 7) {
-    return "#9AF10D";
-  } 
-  else if (rating > 6) {
-    return "#E6F10D";
-  } 
-  else if (rating > 5) {
-    return "#F1C10D";
-  } 
-  else if (rating > 4) {
-    return "#F19A0D";
-  } 
-  else if (rating > 3) {
-    return "#F1720D";
-  } 
-  else if (rating > 2) {
-    return "#F14E0D";
-  } 
-  else {
-    return "#F11F0D"; 
-  }
+  return rating > 9 ? '#1CF036' :
+         rating > 8 ? '#6DF215' :
+         rating > 7 ? '#9AF10D' :
+         rating > 6 ? '#E6F10D' :
+         rating > 5 ? '#F1C10D' :
+         rating > 4 ? '#F19A0D' :
+         rating > 3 ? '#F1720D' :
+         rating > 2 ? '#F14E0D' :
+                      '#F11F0D';
 }
 
 // Create a Intl.NumberFormat object to format popup currency
@@ -123,7 +116,7 @@ zipcodes.then(function(data) {
       }
 
 
-      var popupstr = '<h5>Zip code: '+ data[i].zipcode + '<hr>' +
+      var popupstr = '<h5><b>Zipcode: '+ data[i].zipcode + '</b><hr>' +
                       '</h5><li>Average School Rating: ' + data[i]['Average_School_Rating'].toFixed(2) + 
                       '</li><li>Median Income: ' + formatter.format(data[i]['MEDIAN HOUSEHOLD INCOME']) + 
                       '</li><li>Population: ' + new Intl.NumberFormat().format(data[i]['POPULATION_TOTAL']) + 
@@ -197,18 +190,21 @@ function onEachFeature(feature, layer) {
 
 var info = L.control();
 
+// Create add the info table function
 info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this._div = L.DomUtil.create('div', 'info');
     this.update();
     return this._div;
 };
 
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Community / Zipcode</h4>' +  (props ?
-        '<b>' + props.community + '</b> <br>' + props.zip + '':'')
+// Using the properties of the feature to update the info table
+info.update = function (zipinfo) {
+    // Check to see if the property is there to update the info table
+    this._div.innerHTML = '<h4>Community / Zipcode</h4>' +  (zipinfo ?
+        '<b>' + zipinfo.community + '</b> <br>' + zipinfo.zip + '':'')
 };
 
+// Call function to add the info table
 info.addTo(myMap);
 
 // Apply the geoJSON to the map layer and onEachFeature
