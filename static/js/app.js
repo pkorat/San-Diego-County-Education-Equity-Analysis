@@ -29,12 +29,26 @@ function optionChanged(testSubjectID){
     paneltext = ['Zipcode','Total Students Enrolled','Avg. School Rating','Median Houshold Income','Total Population','Latitude','Longitude']
     var i =0
     
+    // Create a Intl.NumberFormat object to format currency
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+
     //Selecting the required parameters from the Json to display in the Zipcode Demographic section 
     Object.entries(idMetadata[0]).forEach(item=> 
        {
-          if (((item[0]) === 'zipcode')||((item[0]) === 'Total Students Enrolled') ||((item[0]) === 'Average_School_Rating')||((item[0]) === 'MEDIAN HOUSEHOLD INCOME')||((item[0]) === 'latitude_x')||((item[0]) === 'longitude_x')||((item[0]) === 'POPULATION_TOTAL')){
-            //panelDisplay.append("p").text(`${item[0]}: ${item[1]}`)
+          if (item[0] === 'zipcode') {
             panelDisplay.append("p").text(`${paneltext[i]}: ${item[1]}`)
+            i++
+          }
+          else if (item[0] === 'MEDIAN HOUSEHOLD INCOME') {
+            panelDisplay.append("p").text(`${paneltext[i]}: ${formatter.format(item[1])}`)
+            i++
+          }
+          else if (((item[0]) === 'Total Students Enrolled') ||((item[0]) === 'Average_School_Rating')||((item[0]) === 'latitude_x')||((item[0]) === 'longitude_x')||((item[0]) === 'POPULATION_TOTAL')){
+            //panelDisplay.append("p").text(`${item[0]}: ${item[1]}`)
+            panelDisplay.append("p").text(`${paneltext[i]}: ${new Intl.NumberFormat().format(item[1])}`)
             i++
           }
        });
@@ -54,7 +68,7 @@ function optionChanged(testSubjectID){
         if (((item[0]) === 'MEDIAN HOUSEHOLD INCOME')||((item[0]) === 'MEDIAN INCOME ASIAN') ||((item[0]) === 'MEDIAN INCOME BLACK/AA')||((item[0]) === 'MEDIAN HOUSEHOLD INCOME')||((item[0]) === 'MEDIAN INCOME HAW/PAC ISLANDER')||((item[0]) === 'MEDIAN INCOME HISPANIC/LATINO')||((item[0]) === 'MEDIAN INCOME INDIGENOUS PEOPLE')||((item[0]) === 'MEDIAN INCOME MIXED RACE')||((item[0]) === 'MEDIAN INCOME OTHER RACE')||((item[0]) === 'MEDIAN INCOME WHITE/NOT LATINO')){
         // console.log(item);
           //mediantext.push(item[0])  
-          medianvalues.push(item[1])
+          medianvalues.push(formatter.format(item[1]))
         }
       });
 
@@ -141,7 +155,7 @@ function optionChanged(testSubjectID){
       {
         if (((item[0]) === 'population_white_ratio')||((item[0]) === 'population_black_aa_ratio') ||((item[0]) === 'population_indigenous_ratio')||((item[0]) === 'population_asian_ratio')||((item[0]) === 'population_haw_pac_islander_ratio')||((item[0]) === 'population_other_ratio')||((item[0]) === 'population_mixed_ratio')||((item[0]) === 'population_hispanic_latino_ratio')){
         // console.log(item); 
-          racevalues.push(item[1])
+          racevalues.push((item[1]).toFixed(4))
         }
       });
 
@@ -169,7 +183,7 @@ function optionChanged(testSubjectID){
        {
          if (((item[0]) === 'married_ratio')||((item[0]) === 'female_hoh_ratio') ||((item[0]) === 'male_hoh_ratio')||((item[0]) === 'non_family_ratio')){
          // console.log(item);
-          householdvalue.push(item[1] * 100)
+          householdvalue.push((item[1] * 100).toFixed(2))
          }
        });
   
@@ -211,7 +225,7 @@ function optionChanged(testSubjectID){
       {
         if (((item[0]) === 'o25_high_school_completed_ratio') ||((item[0]) === 'o25_ged_attained_ratio')||((item[0]) === 'o25_assoc_degree_completed_ratio')||((item[0]) === 'o25_bach_degree_completed_ratio')||((item[0]) === 'o25_masters_degree_completed_ratio') ||((item[0]) === 'o25_professional_degree_completed_ratio')||((item[0]) === 'o25_doctoral_degree_completed_ratio')){
           edudata.push(item[0])
-          eduvalue.push(item[1] * 100)
+          eduvalue.push((item[1] * 100).toFixed(2))
         }
       });
  
