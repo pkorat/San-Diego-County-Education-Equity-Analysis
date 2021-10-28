@@ -6,8 +6,6 @@ With this visualization we are trying to see the impact of better schools have o
 
 We have used the following to perform our ETL process as well as visualizations.
 
-A summary of our analysis can be viewed in the powerpoint presentation **Final_Presentationv3.pptx**
-
 ![process](images/process.png)
 
 With all the process we have created the following Dashboard
@@ -17,4 +15,6 @@ With all the process we have created the following Dashboard
 ![dashboard2](images/dashboard2.png)
 
 ![dashboard3](images/dashboard3.png)
+
+A summary of our analysis can be viewed in the powerpoint presentation **Final_Presentationv3.pptx**
 
