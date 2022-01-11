@@ -18,3 +18,4 @@ With all the process we have created the following Dashboard
 
 A summary of our analysis can be viewed in the powerpoint presentation **Final_Presentationv3.pptx**
 
+Link to the our [San Diego County Education Dashboard](https://pkorat.github.io/San-Diego-County-Education-Equity-Analysis/)
